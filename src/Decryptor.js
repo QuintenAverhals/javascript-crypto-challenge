@@ -1,17 +1,17 @@
-const _sodium = require('libsodium-wrappers');
-let myKey;
+const sodium = require('libsodium-wrappers');
+let key = null;
 
-
-exports.setKey = async function(key)
-{
-    myKey = key;
+function setkey(setKey){
+    key = setKey;
 }
 
-exports.decrypt = async function(ciphertext, nonce)
-{
-    if (myKey == null){
+function decrypt(ciphertext, nonce){
+    if (key==null){
         throw 'no key';
-	}
-	await _sodium.ready;
-    return _sodium.crypto_secretbox_open_easy(ciphertext, nonce, myKey);
+    }else{
+        return sodium.crypto_secretbox_open_easy(ciphertext, nonce, key);
+    }
 }
+
+module.exports.decrypt = decrypt;
+module.exports.setKey = setkey;
